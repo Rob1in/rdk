@@ -5,6 +5,7 @@ package microphone
 import (
 	"context"
 	"errors"
+	"github.com/pion/mediadevices/pkg/prop"
 	"path/filepath"
 	"regexp"
 
@@ -63,11 +64,11 @@ type Attrs struct {
 // newMicrophoneSource returns a new source based on a microphone discovered from the given attributes.
 func newMicrophoneSource(attrs *Attrs, logger golog.Logger) (audioinput.AudioInput, error) {
 	var err error
-
+	constraints := makeDefaultAudioConstraints(logger)
 	debug := attrs.Debug
 
 	if attrs.Path != "" {
-		return tryMicrophoneOpen(attrs.Path, gostream.DefaultConstraints, logger)
+		return tryMicrophoneOpen(attrs.Path, constraints, logger)
 	}
 
 	var pattern *regexp.Regexp
@@ -117,4 +118,12 @@ func tryMicrophoneOpen(
 		return nil, err
 	}
 	return audioinput.NewFromSource(source)
+}
+
+func makeDefaultAudioConstraints(logger golog.Logger) mediadevices.MediaStreamConstraints {
+	return mediadevices.MediaStreamConstraints{
+		Audio: func(constraint *mediadevices.MediaTrackConstraints) {
+			constraint.ChannelCount = prop.IntRanged{Min: 1, Max: 2}
+		},
+	}
 }
