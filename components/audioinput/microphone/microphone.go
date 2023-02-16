@@ -96,7 +96,9 @@ func newMicrophoneSource(attrs *Attrs, logger golog.Logger) (audioinput.AudioInp
 				}
 				continue
 			}
+			logger.Debug("REACHED HERE")
 			s, err := tryMicrophoneOpen(info.Labels[i], gostream.DefaultConstraints, logger)
+			logger.Debug("REACHED HERE 2")
 			if err == nil {
 				if debug {
 					logger.Debug("\t USING")
