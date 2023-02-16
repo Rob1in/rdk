@@ -119,7 +119,9 @@ func tryMicrophoneOpen(
 	constraints mediadevices.MediaStreamConstraints,
 	logger golog.Logger,
 ) (audioinput.AudioInput, error) {
+
 	source, err := gostream.GetNamedAudioSource(filepath.Base(path), constraints, logger)
+	logger.Debugw("BAH OUAIS 3")
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@ package audioinput
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/edaniels/golog"
@@ -157,6 +158,7 @@ func NewFromSource(audSrc gostream.AudioSource) (AudioInput, error) {
 		return nil, errors.New("cannot have a nil audio source")
 	}
 	provider, ok := audSrc.(gostream.AudioPropertyProvider)
+	fmt.Println("BAH OUAIS 4")
 	if !ok {
 		return nil, errors.New("source must have property provider")
 	}
