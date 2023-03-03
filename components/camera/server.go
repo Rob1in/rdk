@@ -94,6 +94,7 @@ func (s *subtypeServer) GetImage(
 	resp := pb.GetImageResponse{
 		MimeType: actualMIME,
 	}
+	s.logger.Warnf("ah la on est bien")
 	outBytes, err := rimage.EncodeImage(ctx, img, req.MimeType)
 	if err != nil {
 		return nil, err
