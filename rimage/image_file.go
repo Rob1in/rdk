@@ -86,8 +86,7 @@ func init() {
 	// image.Decode as long as we have the appropriate header
 	image.RegisterFormat("vnd.viam.dep", string(DepthMapMagicNumber),
 		func(r io.Reader) (image.Image, error) {
-			f := r.(*bufio.Reader)
-			dm, err := ReadDepthMap(f)
+			dm, err := ReadDepthMap(r)
 			if err != nil {
 				return nil, err
 			}
@@ -299,16 +298,22 @@ func EncodeImage(ctx context.Context, img image.Image, mimeType string) ([]byte,
 
 	actualOutMIME, _ := ut.CheckLazyMIMEType(mimeType)
 
-	if lazy, ok := img.(*LazyEncodedImage); ok && lazy.MIMEType() == actualOutMIME {
-		return lazy.imgBytes, nil
+	if lazy, ok := img.(*LazyEncodedImage); ok {
+		if lazy.MIMEType() == actualOutMIME {
+			return lazy.imgBytes, nil
+		}
+		// LazyImage holds bytes different from requested mime type: decode and re-encode
+		lazy.decode()
+		if lazy.decodeErr != nil {
+			return nil, errors.Errorf("could not decode LazyEncodedImage: %v", lazy.decodeErr)
+		}
+		return EncodeImage(ctx, lazy.decodedImage, actualOutMIME)
 	}
 	var buf bytes.Buffer
 	bounds := img.Bounds()
 	switch actualOutMIME {
 	case ut.MimeTypeRawDepth:
-		buf.Write(DepthMapMagicNumber)
-		// WriteRawDepthMapTo encodes the height and width
-		if _, err := WriteRawDepthMapTo(img.(*DepthMap), &buf); err != nil {
+		if _, err := WriteViamDepthMapTo(img, &buf); err != nil {
 			return nil, err
 		}
 	case ut.MimeTypeRawRGBA:
