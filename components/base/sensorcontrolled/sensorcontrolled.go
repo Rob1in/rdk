@@ -191,7 +191,7 @@ func (sb *sensorBase) SetVelocity(
 	sb.setPolling(true)
 	// start a sensor context for the sensor loop based on the longstanding base
 	// creator context, and add a timeout for the context
-	timeOut := 10 * time.Second
+	timeOut := 100 * time.Second
 	var sensorCtx context.Context
 	sensorCtx, sb.sensorLoopDone = context.WithTimeout(context.Background(), timeOut)
 
