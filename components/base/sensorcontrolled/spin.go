@@ -10,7 +10,6 @@ import (
 	"go.viam.com/utils"
 
 	"go.viam.com/rdk/components/movementsensor"
-	rdkutils "go.viam.com/rdk/utils"
 )
 
 const (
@@ -190,7 +189,8 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 	}
 	// add Pi to make the computation for overshoot simpler
 	// turns imus from -180 -> 180 to a 0 -> 360 range
-	return addAnglesInDomain(rdkutils.RadToDeg(orientation.EulerAngles().Yaw), 0), nil
+	return orientation.OrientationVectorDegrees().Theta, nil
+	//return addAnglesInDomain(rdkutils.RadToDeg(orientation.EulerAngles().Yaw), 0), nil
 }
 
 func addAnglesInDomain(target, current float64) float64 {
