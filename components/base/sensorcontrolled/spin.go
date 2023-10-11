@@ -86,7 +86,7 @@ func (sb *sensorBase) stopSpinWithSensor(
 	// timeout duration is a multiplier times the expected time to perform a movement
 	spinTimeEst := time.Duration(int(time.Second) * int(math.Abs(angleDeg/degsPerSec)))
 	startTime := time.Now()
-	timeOut := 5 * spinTimeEst
+	timeOut := 100 * spinTimeEst
 	if timeOut < 10*time.Second {
 		timeOut = 10 * time.Second
 	}
