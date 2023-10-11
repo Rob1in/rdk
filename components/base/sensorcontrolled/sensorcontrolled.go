@@ -23,7 +23,7 @@ const (
 	velocitiesPollTime = 5 * time.Millisecond
 	boundCheckTurn     = 2.0
 	boundCheckTarget   = 5.0
-	sensorDebug        = false
+	sensorDebug        = true
 )
 
 var (
