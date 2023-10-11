@@ -38,7 +38,7 @@ func (sb *sensorBase) Spin(ctx context.Context, angleDeg, degsPerSec float64, ex
 	var sensorCtx context.Context
 	sensorCtx, sb.sensorLoopDone = context.WithCancel(context.Background())
 	if err := sb.stopSpinWithSensor(sensorCtx, angleDeg, degsPerSec); err != nil {
-		return err
+		return errors.Wrapf(err, "sb.stopSpinWithSensor")
 	}
 
 	// starts a goroutine from within wheeled base's runAll function to run motors in the background
@@ -73,7 +73,7 @@ func (sb *sensorBase) stopSpinWithSensor(
 	// imu readings are limited from 0 -> 360
 	startYaw, err := getCurrentYaw(sb.orientation)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "getCurrentYaw")
 	}
 
 	targetYaw, dir, _ := findSpinParams(angleDeg, degsPerSec, startYaw)
