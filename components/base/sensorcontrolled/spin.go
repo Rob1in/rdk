@@ -192,12 +192,13 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 	// turns imus from -180 -> 180 to a 0 -> 360 range
 	fmt.Println("Orientation is:")
 	fmt.Println(orientation)
-	fmt.Println("\n theta is ")
-	fmt.Println(orientation.OrientationVectorDegrees().Theta)
+
 	theta := orientation.OrientationVectorDegrees().Theta
 	if theta < 0 {
 		theta += 360
 	}
+	fmt.Println("\n theta is ")
+	fmt.Println(orientation.OrientationVectorDegrees().Theta)
 	return theta, nil
 	//return addAnglesInDomain(rdkutils.RadToDeg(orientation.EulerAngles().Yaw), 0), nil
 }
@@ -238,25 +239,24 @@ func angleBetween(current, bound1, bound2 float64) bool {
 }
 
 func hasOverShot(angle, start, target, dir float64) bool {
-	//switch {
-	//case dir == -1 && start > target: // clockwise
-	//	// for cases with a quadrant switch from 1 <-> 4
-	//	// check if the current angle is in the regions before the
-	//	// target and after the start
-	//	over := angleBetween(angle, target, 0) || angleBetween(angle, 360, start)
-	//	return over
-	//case dir == -1 && target > start:
-	//	// the overshoot range is the inside range between the start and target
-	//	return angleBetween(angle, target, start)
-	//case dir == 1 && start > target: // counterclockwise
-	//	// for cases with a quadrant switch from 1 <-> 4
-	//	// check if the current angle is not in the regions after the
-	//	// target and before the start
-	//	over := !angleBetween(angle, 0, target) && !angleBetween(angle, start, 360)
-	//	return over
-	//default:
-	//	// the overshoot range is the range of angles outside the start and target ranges
-	//	return !angleBetween(angle, start, target)
-	//}
-	return false
+	switch {
+	case dir == -1 && start > target: // clockwise
+		// for cases with a quadrant switch from 1 <-> 4
+		// check if the current angle is in the regions before the
+		// target and after the start
+		over := angleBetween(angle, target, 0) || angleBetween(angle, 360, start)
+		return over
+	case dir == -1 && target > start:
+		// the overshoot range is the inside range between the start and target
+		return angleBetween(angle, target, start)
+	case dir == 1 && start > target: // counterclockwise
+		// for cases with a quadrant switch from 1 <-> 4
+		// check if the current angle is not in the regions after the
+		// target and before the start
+		over := !angleBetween(angle, 0, target) && !angleBetween(angle, start, 360)
+		return over
+	default:
+		// the overshoot range is the range of angles outside the start and target ranges
+		return !angleBetween(angle, start, target)
+	}
 }
