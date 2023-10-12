@@ -192,7 +192,9 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 	// turns imus from -180 -> 180 to a 0 -> 360 range
 	fmt.Println("Orientation is:")
 	fmt.Println(orientation)
-
+	fmt.Println("orientation.OrientationVectorDegrees().Theta")
+	fmt.Println(orientation.OrientationVectorDegrees().Theta)
+	//theta = &orientation.
 	theta := -1.0 * orientation.OrientationVectorDegrees().Theta
 	if theta < 0 {
 		theta += 360
