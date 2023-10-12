@@ -258,5 +258,5 @@ func hasOverShot(angle, start, target, dir float64) bool {
 	//	// the overshoot range is the range of angles outside the start and target ranges
 	//	return !angleBetween(angle, start, target)
 	//}
-	return true
+	return false
 }
