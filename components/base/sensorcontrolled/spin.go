@@ -193,7 +193,7 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 	fmt.Println("Orientation is:")
 	fmt.Println(orientation)
 
-	theta := -orientation.OrientationVectorDegrees().Theta
+	theta := -1.0 * orientation.OrientationVectorDegrees().Theta
 	if theta < 0 {
 		theta += 360
 	}
