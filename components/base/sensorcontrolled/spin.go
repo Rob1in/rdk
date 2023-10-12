@@ -2,6 +2,7 @@ package sensorcontrolled
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"time"
 
@@ -189,7 +190,11 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 	}
 	// add Pi to make the computation for overshoot simpler
 	// turns imus from -180 -> 180 to a 0 -> 360 range
-	return -orientation.OrientationVectorDegrees().Theta, nil
+	fmt.Println("Orientation is:")
+	fmt.Println(orientation)
+	fmt.Println("\n theta is ")
+	fmt.Println(orientation.OrientationVectorDegrees().Theta)
+	return orientation.OrientationVectorDegrees().Theta, nil
 	//return addAnglesInDomain(rdkutils.RadToDeg(orientation.EulerAngles().Yaw), 0), nil
 }
 
