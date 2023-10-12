@@ -200,7 +200,7 @@ func getCurrentYaw(ms movementsensor.MovementSensor,
 		theta += 360
 	}
 	fmt.Println("\n theta is ")
-	fmt.Println(orientation.OrientationVectorDegrees().Theta)
+	fmt.Println(theta)
 	return theta, nil
 	//return addAnglesInDomain(rdkutils.RadToDeg(orientation.EulerAngles().Yaw), 0), nil
 }
